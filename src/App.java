@@ -14,8 +14,9 @@ import java.util.ArrayList;
 
 public class App {
 
-     private static final String SONG_PATH = "src/GoldZoro-I_kissed_a_girl_(Hardstyle).mp3";
-     private static final String LRC_PATH = "src/GoldZoro-I_kissed_a_girl_(Hardstyle).lrc";
+     private static final String SONG_PATH = "src/assets/Kiss-I_Was_Made_For_Lovin'_You/Kiss-I_Was_Made_For_Lovin'_You.mp3";
+     private static final String LRC_PATH = "src\\assets\\Kiss-I_Was_Made_For_Lovin'_You\\Kiss-I_Was_Made_For_Lovin'_You.lrc";
+     private static final float speed = 1;
 
      public static void main(String[] args) throws InterruptedException {
           try (BufferedReader reader = Files.newBufferedReader(Path.of(LRC_PATH), StandardCharsets.UTF_8)) {
@@ -23,7 +24,7 @@ public class App {
                ArrayList<Sentence> sentences = LrcParser.create(reader).findAllSentences(-1, -1);
 
                playM(SONG_PATH);
-               Thread.sleep(sentences.get(0).getFromTime());
+               Thread.sleep(Math.abs(sentences.get(0).getFromTime()));
                writeLRC(sentences);
 
           } catch (IOException e) {
@@ -49,13 +50,31 @@ public class App {
      }
 
      public static void writeLRC(ArrayList<Sentence> sentences) {
+          long char_time;
+          long sentence_time;
+          char[] char_array;
           for (Sentence s : sentences) {
-               System.out.println(s.getContent() + " - " + s.getDuring());
-               try {
-                    Thread.sleep(s.getDuring());
-               } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+               sentence_time = Math.abs(s.getDuring());
+               char_time = sentence_time / s.getContent().toCharArray().length;
+               char_array = s.getContent().toCharArray();
+               for (char c : s.getContent().toCharArray()) {
+                    System.out.print(c);
+                    try {
+                         Thread.sleep(Math.abs(char_time));
+                    } catch (InterruptedException e) {
+                         Thread.currentThread().interrupt();
+                    }
                }
+               System.out.print("\n");
           }
+
+          // for (Sentence s : sentences) {
+          // System.out.println(s.getContent() + " - " + s.getDuring());
+          // try {
+          // Thread.sleep(s.getDuring());
+          // } catch (InterruptedException e) {
+          // Thread.currentThread().interrupt();
+          // }
+          // }
      }
 }
