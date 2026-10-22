@@ -3,7 +3,10 @@ import com.github.authorfu.lrcparser.parser.Sentence;
 import javazoom.jl.player.Player;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -11,15 +14,15 @@ import java.util.ArrayList;
 
 public class App {
 
-     public static String song_path = "src/GoldZoro-I_kissed_a_girl_(Hardstyle).mp3";
-     public static String lrc_path = "src/GoldZoro-I_kissed_a_girl_(Hardstyle).lrc";
+     private static final String SONG_PATH = "src/GoldZoro-I_kissed_a_girl_(Hardstyle).mp3";
+     private static final String LRC_PATH = "src/GoldZoro-I_kissed_a_girl_(Hardstyle).lrc";
 
      public static void main(String[] args) throws InterruptedException {
-          try (BufferedReader reader = new BufferedReader(new FileReader(lrc_path))) {
+          try (BufferedReader reader = Files.newBufferedReader(Path.of(LRC_PATH), StandardCharsets.UTF_8)) {
 
                ArrayList<Sentence> sentences = LrcParser.create(reader).findAllSentences(-1, -1);
 
-               playM(song_path);
+               playM(SONG_PATH);
                Thread.sleep(sentences.get(0).getFromTime());
                writeLRC(sentences);
 
@@ -51,7 +54,7 @@ public class App {
                try {
                     Thread.sleep(s.getDuring());
                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
                }
           }
      }
