@@ -13,9 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class App {
-
      private static final String SONG_PATH = "src/assets/Kiss-I_Was_Made_For_Lovin'_You/Kiss-I_Was_Made_For_Lovin'_You.mp3";
-     private static final String LRC_PATH = "src\\assets\\Kiss-I_Was_Made_For_Lovin'_You\\Kiss-I_Was_Made_For_Lovin'_You.lrc";
+     private static final String LRC_PATH = "src\\assets\\Kiss-I_Was_Made_For_Lovin'_You\\Kiss-I_Was_Made_For_Lovin'_You (2).lrc";
      private static final float speed = 1;
 
      public static void main(String[] args) throws InterruptedException {
@@ -55,16 +54,30 @@ public class App {
           char[] char_array;
           for (Sentence s : sentences) {
                sentence_time = Math.abs(s.getDuring());
-               char_time = sentence_time / s.getContent().toCharArray().length;
                char_array = s.getContent().toCharArray();
-               for (char c : s.getContent().toCharArray()) {
-                    System.out.print(c);
-                    try {
-                         Thread.sleep(Math.abs(char_time));
-                    } catch (InterruptedException e) {
-                         Thread.currentThread().interrupt();
+               if(char_array.length != 0) {
+                    char_time = sentence_time / s.getContent().toCharArray().length;
+                    for (char c : s.getContent().toCharArray()) {
+                         System.out.print(c);
+                         try {
+                              Thread.sleep(Math.abs(char_time));
+                         } catch (InterruptedException e) {
+                              Thread.currentThread().interrupt();
+                         }
                     }
                }
+               else{
+                    char_time = sentence_time / 3;
+                    for (int i = 1; i <=3; i++){
+                         System.out.print(".");
+                         try {
+                              Thread.sleep(Math.abs(char_time));
+                         } catch (InterruptedException e) {
+                              Thread.currentThread().interrupt();
+                         }
+                    }
+               }
+               
                System.out.print("\n");
           }
 
